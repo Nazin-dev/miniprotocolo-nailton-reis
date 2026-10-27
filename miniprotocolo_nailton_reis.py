@@ -20,6 +20,11 @@ ALTERAÇÃO 03
 O que foi implementado: comando PALAVRAS.
 Entrada testada: PALAVRAS|redes de computadores
 Saída obtida: RESPOSTA|O texto possui 3 palavras
+
+ALTERAÇÃO 04
+O que foi implementado: comando SOMA.
+Entrada testada: SOMA|10,5
+Saída obtida: RESPOSTA|15
 """
 
 """
@@ -68,6 +73,14 @@ PORTA_UDP = 9001
 HOST_SERVIDOR = "127.0.0.1"
 
 
+# ALTERAÇÃO 04 — converte o texto para inteiro ou, se não for possível, para decimal
+def converter_numero(texto):
+    try:
+        return int(texto)
+    except ValueError:
+        return float(texto)
+
+
 def processar_mensagem(mensagem):
     """Interpreta uma mensagem do nosso miniprotocolo."""
 
@@ -106,6 +119,16 @@ def processar_mensagem(mensagem):
     # ALTERAÇÃO 03 — comando PALAVRAS
     if comando == "PALAVRAS":
         return "RESPOSTA|O texto possui " + str(len(conteudo.split())) + " palavras"
+
+    # ALTERAÇÃO 04 — comando SOMA
+    if comando == "SOMA":
+        try:
+            primeiro, segundo = conteudo.split(",")
+            resultado = converter_numero(primeiro) + converter_numero(segundo)
+        except ValueError:
+            return "ERRO|Informe dois números separados por vírgula"
+
+        return "RESPOSTA|" + str(resultado)
 
     if comando == "HORA":
         horario = datetime.now().strftime("%H:%M:%S")
