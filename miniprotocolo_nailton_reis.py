@@ -5,6 +5,11 @@ DATA: 27/10/2026
 PROTOCOLO ESCOLHIDO: TCP
 
 REGISTRO DAS ALTERAÇÕES
+
+ALTERAÇÃO 01
+O que foi implementado: comando MINUSCULA.
+Entrada testada: MINUSCULA|REDES DE COMPUTADORES
+Saída obtida: RESPOSTA|redes de computadores
 """
 
 """
@@ -75,6 +80,10 @@ def processar_mensagem(mensagem):
 
     if comando == "MAIUSCULA":
         return "RESPOSTA|" + conteudo.upper()
+
+    # ALTERAÇÃO 01 — comando MINUSCULA
+    if comando == "MINUSCULA":
+        return "RESPOSTA|" + conteudo.lower()
 
     if comando == "TAMANHO":
         quantidade = len(conteudo)
