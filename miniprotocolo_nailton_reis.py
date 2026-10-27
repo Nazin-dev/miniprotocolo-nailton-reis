@@ -25,6 +25,11 @@ ALTERAÇÃO 04
 O que foi implementado: comando SOMA.
 Entrada testada: SOMA|10,5
 Saída obtida: RESPOSTA|15
+
+ALTERAÇÃO 05
+O que foi implementado: comando PING.
+Entrada testada: PING|
+Saída obtida: PONG|Servidor ativo
 """
 
 """
@@ -133,6 +138,10 @@ def processar_mensagem(mensagem):
     if comando == "HORA":
         horario = datetime.now().strftime("%H:%M:%S")
         return "RESPOSTA|Agora são " + horario
+
+    # ALTERAÇÃO 05 — comando PING
+    if comando == "PING":
+        return "PONG|Servidor ativo"
 
     if comando == "SAIR":
         return "FIM|Conversa encerrada"
