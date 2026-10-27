@@ -40,6 +40,11 @@ ALTERAÇÃO 07
 O que foi implementado: validação do conteúdo obrigatório e do conteúdo inesperado.
 Entrada testada: MAIUSCULA|
 Saída obtida: ERRO|O comando MAIUSCULA precisa de conteúdo
+
+ALTERAÇÃO 08
+O que foi implementado: normalização do comando com strip() e upper().
+Entrada testada: eco |Olá
+Saída obtida: RESPOSTA|Olá
 """
 
 """
@@ -107,7 +112,8 @@ def processar_mensagem(mensagem):
     comando, conteudo = mensagem.split("|", 1)
 
     # Convertemos o comando para maiúsculo para aceitar eco, Eco ou ECO.
-    comando = comando.upper()
+    # ALTERAÇÃO 08 — strip() e upper() somente no comando
+    comando = comando.strip().upper()
 
     # Regra simples de alerta que será mostrada somente no servidor.
     if len(conteudo) > 100:
