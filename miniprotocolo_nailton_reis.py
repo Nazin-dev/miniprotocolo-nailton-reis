@@ -50,6 +50,11 @@ ALTERAÇÃO 09
 O que foi implementado: respostas padronizadas em OK|COMANDO|RESULTADO e ERRO|CODIGO|DESCRICAO.
 Entrada testada: ECO|Olá
 Saída obtida: OK|ECO|Olá
+
+ALTERAÇÃO 10
+O que foi implementado: identificador da solicitação no TCP.
+Entrada testada: ECO|Olá (enviado: 1|ECO|Olá)
+Saída obtida: 1|OK|ECO|Olá
 """
 
 """
@@ -188,6 +193,17 @@ def processar_mensagem(mensagem):
     return "ERRO|COMANDO_DESCONHECIDO|" + comando
 
 
+# ALTERAÇÃO 10 — separa ID|COMANDO|CONTEUDO e devolve o mesmo ID na resposta
+def processar_mensagem_com_id(mensagem):
+    partes = mensagem.split("|", 2)
+
+    if len(partes) < 3:
+        return partes[0] + "|ERRO|FORMATO_INVALIDO|Use COMANDO|CONTEUDO"
+
+    identificador, comando, conteudo = partes
+    return identificador + "|" + processar_mensagem(comando + "|" + conteudo)
+
+
 def enviar_tcp(conexao, mensagem):
     """Envia uma mensagem TCP terminada por uma quebra de linha."""
 
@@ -252,12 +268,14 @@ def executar_servidor_tcp():
 
         print("Recebido por TCP:", mensagem)
 
-        resposta = processar_mensagem(mensagem)
+        # ALTERAÇÃO 10 — mensagem com identificador
+        resposta = processar_mensagem_com_id(mensagem)
         enviar_tcp(conexao, resposta)
 
         print("Enviado por TCP:", resposta)
 
-        if mensagem.upper().startswith("SAIR|"):
+        # ALTERAÇÃO 10 — ignora o ID ao verificar o SAIR
+        if mensagem.split("|", 1)[-1].upper().startswith("SAIR|"):
             break
 
     conexao.close()
@@ -279,10 +297,14 @@ def executar_cliente_tcp():
     print("Conectado ao servidor TCP.")
     mostrar_comandos()
 
+    # ALTERAÇÃO 10 — contador de solicitações
+    contador = 1
+
     while True:
         mensagem = input("Mensagem: ")
 
-        enviar_tcp(cliente, mensagem)
+        # ALTERAÇÃO 10 — acrescenta o número antes da mensagem
+        enviar_tcp(cliente, str(contador) + "|" + mensagem)
 
         resposta = receber_tcp(cliente)
 
@@ -291,6 +313,9 @@ def executar_cliente_tcp():
             break
 
         print("Servidor:", resposta)
+
+        # ALTERAÇÃO 10 — aumenta o contador após receber a resposta
+        contador += 1
 
         if mensagem.upper().startswith("SAIR|"):
             break
