@@ -45,6 +45,11 @@ ALTERAÇÃO 08
 O que foi implementado: normalização do comando com strip() e upper().
 Entrada testada: eco |Olá
 Saída obtida: RESPOSTA|Olá
+
+ALTERAÇÃO 09
+O que foi implementado: respostas padronizadas em OK|COMANDO|RESULTADO e ERRO|CODIGO|DESCRICAO.
+Entrada testada: ECO|Olá
+Saída obtida: OK|ECO|Olá
 """
 
 """
@@ -104,9 +109,11 @@ def converter_numero(texto):
 def processar_mensagem(mensagem):
     """Interpreta uma mensagem do nosso miniprotocolo."""
 
+    # ALTERAÇÃO 09 — respostas no padrão OK|COMANDO|RESULTADO e ERRO|CODIGO|DESCRICAO
+
     # Toda mensagem precisa possuir o separador |.
     if "|" not in mensagem:
-        return "ERRO|Use o formato COMANDO|CONTEUDO"
+        return "ERRO|FORMATO_INVALIDO|Use COMANDO|CONTEUDO"
 
     # split("|", 1) separa apenas no primeiro caractere |.
     comando, conteudo = mensagem.split("|", 1)
@@ -124,32 +131,32 @@ def processar_mensagem(mensagem):
     sem_conteudo = ["HORA", "PING", "AJUDA", "SAIR"]
 
     if comando in com_conteudo and conteudo == "":
-        return "ERRO|O comando " + comando + " precisa de conteúdo"
+        return "ERRO|CONTEUDO_AUSENTE|O comando " + comando + " precisa de conteúdo"
 
     if comando in sem_conteudo and conteudo != "":
-        return "ERRO|O comando " + comando + " não recebe conteúdo"
+        return "ERRO|CONTEUDO_INESPERADO|O comando " + comando + " não recebe conteúdo"
 
     if comando == "ECO":
-        return "RESPOSTA|" + conteudo
+        return "OK|ECO|" + conteudo
 
     if comando == "MAIUSCULA":
-        return "RESPOSTA|" + conteudo.upper()
+        return "OK|MAIUSCULA|" + conteudo.upper()
 
     # ALTERAÇÃO 01 — comando MINUSCULA
     if comando == "MINUSCULA":
-        return "RESPOSTA|" + conteudo.lower()
+        return "OK|MINUSCULA|" + conteudo.lower()
 
     # ALTERAÇÃO 02 — comando INVERTER
     if comando == "INVERTER":
-        return "RESPOSTA|" + conteudo[::-1]
+        return "OK|INVERTER|" + conteudo[::-1]
 
     if comando == "TAMANHO":
         quantidade = len(conteudo)
-        return "RESPOSTA|O texto possui " + str(quantidade) + " caracteres"
+        return "OK|TAMANHO|O texto possui " + str(quantidade) + " caracteres"
 
     # ALTERAÇÃO 03 — comando PALAVRAS
     if comando == "PALAVRAS":
-        return "RESPOSTA|O texto possui " + str(len(conteudo.split())) + " palavras"
+        return "OK|PALAVRAS|O texto possui " + str(len(conteudo.split())) + " palavras"
 
     # ALTERAÇÃO 04 — comando SOMA
     if comando == "SOMA":
@@ -157,28 +164,28 @@ def processar_mensagem(mensagem):
             primeiro, segundo = conteudo.split(",")
             resultado = converter_numero(primeiro) + converter_numero(segundo)
         except ValueError:
-            return "ERRO|Informe dois números separados por vírgula"
+            return "ERRO|NUMEROS_INVALIDOS|Informe dois números válidos"
 
-        return "RESPOSTA|" + str(resultado)
+        return "OK|SOMA|" + str(resultado)
 
     if comando == "HORA":
         horario = datetime.now().strftime("%H:%M:%S")
-        return "RESPOSTA|Agora são " + horario
+        return "OK|HORA|Agora são " + horario
 
     # ALTERAÇÃO 05 — comando PING
     if comando == "PING":
-        return "PONG|Servidor ativo"
+        return "OK|PING|Servidor ativo"
 
     # ALTERAÇÃO 06 — comando AJUDA
     if comando == "AJUDA":
-        return "RESPOSTA|ECO, MAIUSCULA, MINUSCULA, INVERTER, TAMANHO, PALAVRAS, SOMA, HORA, PING, AJUDA, SAIR"
+        return "OK|AJUDA|ECO, MAIUSCULA, MINUSCULA, INVERTER, TAMANHO, PALAVRAS, SOMA, HORA, PING, AJUDA, SAIR"
 
     if comando == "SAIR":
-        return "FIM|Conversa encerrada"
+        return "OK|SAIR|Conversa encerrada"
 
     # Se nenhum comando conhecido foi encontrado, retornamos um erro.
     print("[ALERTA] Comando desconhecido:", comando)
-    return "ERRO|Comando desconhecido"
+    return "ERRO|COMANDO_DESCONHECIDO|" + comando
 
 
 def enviar_tcp(conexao, mensagem):
