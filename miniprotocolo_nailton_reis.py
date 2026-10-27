@@ -35,6 +35,11 @@ ALTERAÇÃO 06
 O que foi implementado: comando AJUDA e menu de comandos atualizado.
 Entrada testada: AJUDA|
 Saída obtida: RESPOSTA|ECO, MAIUSCULA, MINUSCULA, INVERTER, TAMANHO, PALAVRAS, SOMA, HORA, PING, AJUDA, SAIR
+
+ALTERAÇÃO 07
+O que foi implementado: validação do conteúdo obrigatório e do conteúdo inesperado.
+Entrada testada: MAIUSCULA|
+Saída obtida: ERRO|O comando MAIUSCULA precisa de conteúdo
 """
 
 """
@@ -107,6 +112,16 @@ def processar_mensagem(mensagem):
     # Regra simples de alerta que será mostrada somente no servidor.
     if len(conteudo) > 100:
         print("[ALERTA] O conteúdo possui mais de 100 caracteres.")
+
+    # ALTERAÇÃO 07 — validação do conteúdo
+    com_conteudo = ["ECO", "MAIUSCULA", "MINUSCULA", "INVERTER", "TAMANHO", "PALAVRAS", "SOMA"]
+    sem_conteudo = ["HORA", "PING", "AJUDA", "SAIR"]
+
+    if comando in com_conteudo and conteudo == "":
+        return "ERRO|O comando " + comando + " precisa de conteúdo"
+
+    if comando in sem_conteudo and conteudo != "":
+        return "ERRO|O comando " + comando + " não recebe conteúdo"
 
     if comando == "ECO":
         return "RESPOSTA|" + conteudo
