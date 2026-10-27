@@ -30,6 +30,11 @@ ALTERAÇÃO 05
 O que foi implementado: comando PING.
 Entrada testada: PING|
 Saída obtida: PONG|Servidor ativo
+
+ALTERAÇÃO 06
+O que foi implementado: comando AJUDA e menu de comandos atualizado.
+Entrada testada: AJUDA|
+Saída obtida: RESPOSTA|ECO, MAIUSCULA, MINUSCULA, INVERTER, TAMANHO, PALAVRAS, SOMA, HORA, PING, AJUDA, SAIR
 """
 
 """
@@ -142,6 +147,10 @@ def processar_mensagem(mensagem):
     # ALTERAÇÃO 05 — comando PING
     if comando == "PING":
         return "PONG|Servidor ativo"
+
+    # ALTERAÇÃO 06 — comando AJUDA
+    if comando == "AJUDA":
+        return "RESPOSTA|ECO, MAIUSCULA, MINUSCULA, INVERTER, TAMANHO, PALAVRAS, SOMA, HORA, PING, AJUDA, SAIR"
 
     if comando == "SAIR":
         return "FIM|Conversa encerrada"
@@ -336,8 +345,15 @@ def mostrar_comandos():
     print("Comandos disponíveis:")
     print("ECO|Olá")
     print("MAIUSCULA|redes de computadores")
+    # ALTERAÇÃO 06 — novos comandos no menu
+    print("MINUSCULA|REDES DE COMPUTADORES")
+    print("INVERTER|socket")
     print("TAMANHO|quantos caracteres existem aqui?")
+    print("PALAVRAS|redes de computadores")
+    print("SOMA|10,5")
     print("HORA|")
+    print("PING|")
+    print("AJUDA|")
     print("SAIR|")
     print()
 
