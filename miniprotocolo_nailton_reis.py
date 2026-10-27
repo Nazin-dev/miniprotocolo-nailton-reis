@@ -10,6 +10,11 @@ ALTERAÇÃO 01
 O que foi implementado: comando MINUSCULA.
 Entrada testada: MINUSCULA|REDES DE COMPUTADORES
 Saída obtida: RESPOSTA|redes de computadores
+
+ALTERAÇÃO 02
+O que foi implementado: comando INVERTER.
+Entrada testada: INVERTER|socket
+Saída obtida: RESPOSTA|tekcos
 """
 
 """
@@ -84,6 +89,10 @@ def processar_mensagem(mensagem):
     # ALTERAÇÃO 01 — comando MINUSCULA
     if comando == "MINUSCULA":
         return "RESPOSTA|" + conteudo.lower()
+
+    # ALTERAÇÃO 02 — comando INVERTER
+    if comando == "INVERTER":
+        return "RESPOSTA|" + conteudo[::-1]
 
     if comando == "TAMANHO":
         quantidade = len(conteudo)
