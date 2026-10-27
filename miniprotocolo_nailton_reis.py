@@ -15,6 +15,11 @@ ALTERAÇÃO 02
 O que foi implementado: comando INVERTER.
 Entrada testada: INVERTER|socket
 Saída obtida: RESPOSTA|tekcos
+
+ALTERAÇÃO 03
+O que foi implementado: comando PALAVRAS.
+Entrada testada: PALAVRAS|redes de computadores
+Saída obtida: RESPOSTA|O texto possui 3 palavras
 """
 
 """
@@ -97,6 +102,10 @@ def processar_mensagem(mensagem):
     if comando == "TAMANHO":
         quantidade = len(conteudo)
         return "RESPOSTA|O texto possui " + str(quantidade) + " caracteres"
+
+    # ALTERAÇÃO 03 — comando PALAVRAS
+    if comando == "PALAVRAS":
+        return "RESPOSTA|O texto possui " + str(len(conteudo.split())) + " palavras"
 
     if comando == "HORA":
         horario = datetime.now().strftime("%H:%M:%S")
