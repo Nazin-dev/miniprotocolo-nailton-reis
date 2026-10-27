@@ -1,4 +1,13 @@
 """
+ALUNO: Nailton Reis
+TURMA: Tecnologia em Sistemas para Internet — Redes de Computadores II
+DATA: 27/10/2026
+PROTOCOLO ESCOLHIDO: TCP
+
+REGISTRO DAS ALTERAÇÕES
+"""
+
+"""
 DEMONSTRAÇÃO: TCP E UDP COM UM MINIPROTOCOLO
 
 Este único arquivo pode funcionar como:
